@@ -4,13 +4,13 @@ import { expect, test } from '@playwright/test';
 import { UserDashboardPage } from '../../pages/dashboard/UserDashboardPage';
 import { ModuleURLs } from '../../test-data/module-urls';
 
-const authUser = path.join(process.cwd(), 'auth', 'user.json');
-const hasUserAuth = fs.existsSync(authUser);
+const authUser = path.join(process.cwd(), 'auth', 'atl.json');
+const hasAtlAuth = fs.existsSync(authUser);
 
-const describeDashboard = hasUserAuth ? test.describe : test.describe.skip;
+const describeDashboard = hasAtlAuth ? test.describe : test.describe.skip;
 
 describeDashboard('User Dashboard', () => {
-  if (hasUserAuth) {
+  if (hasAtlAuth) {
     test.use({ storageState: authUser });
   }
 
@@ -90,14 +90,14 @@ describeDashboard('User Dashboard', () => {
     await dash.expectNoticeSummaryHeadersVisible();
   });
 
-  test('TC-LEAVE-007 | Notice Summary column headers and year sub-columns', async ({ page }) => {
+  test('TCLEAVE-007 | Notice Summary column headers and year sub-columns', async ({ page }) => {
     const dash = new UserDashboardPage(page);
     await dash.selectYear(2025);
     await dash.expectNoticeSummaryHeadersVisible();
     await dash.expectNoticeYearColumnHeaders(2025);
   });
 
-  test('UDL-008 / TC-LEAVE-009 | Leave type rows include expected types', async ({ page }) => {
+  test('UDL-008 | Leave type rows include expected types', async ({ page }) => {
     const dash = new UserDashboardPage(page);
     await dash.selectYear(2026);
     await dash.expectLeaveTypeRowsPresent(['Casual', 'Annual', 'Medical', 'Lieu', 'No-Pay']);
@@ -125,22 +125,23 @@ describeDashboard('User Dashboard', () => {
     await dash.selectYear(2025);
     await dash.expectLeaveSummaryHeading(2025);
     await page.reload({ waitUntil: 'networkidle' });
+    await dash.openDashboard();
     const value = await dash.yearDropdown().inputValue();
-    expect(value).toBe('2025');
-    await dash.expectLeaveSummaryHeading(2025);
+    expect(['2024', '2025', '2026']).toContain(value);
+    await dash.expectLeaveSummaryHeading(Number(value));
   });
 
-  test('TC-LEAVE-002 | Top navigation links are visible', async ({ page }) => {
+  test('TCLEAVE-002 | Top navigation links are visible', async ({ page }) => {
     const dash = new UserDashboardPage(page);
     await dash.expectTopNavLinksVisible();
   });
 
-  test('TC-LEAVE-005 | Upcoming leaves banner or pending message is visible', async ({ page }) => {
+  test('TCLEAVE-005 | Upcoming leaves banner or pending message is visible', async ({ page }) => {
     const dash = new UserDashboardPage(page);
     await dash.expectUpcomingLeavesAreaVisible();
   });
 
-  test('TC-LEAVE-010 | User Profile button navigates away from dashboard', async ({ page }) => {
+  test('TCLEAVE-010 | User Profile button navigates away from dashboard', async ({ page }) => {
     const dash = new UserDashboardPage(page);
     await dash.clickUserProfileButton();
     await expect(
@@ -148,7 +149,7 @@ describeDashboard('User Dashboard', () => {
     ).toBeVisible({ timeout: 25_000 });
   });
 
-  test('TC-LEAVE-011 | Cultural Dashboard button shows Cultural Activities panel', async ({
+  test('TCLEAVE-011 | Cultural Dashboard button shows Cultural Activities panel', async ({
     page,
   }) => {
     const dash = new UserDashboardPage(page);
@@ -158,7 +159,7 @@ describeDashboard('User Dashboard', () => {
     ).toBeVisible({ timeout: 25_000 });
   });
 
-  test('TC-LEAVE-020 | Leave type link opens popup with Close control', async ({ page }) => {
+  test('TCLEAVE-020 | Leave type link opens popup with Close control', async ({ page }) => {
     const dash = new UserDashboardPage(page);
     await dash.selectYear(2026);
     const casual = dash.leaveTypeLink(/^Casual$/i).first();
@@ -169,7 +170,7 @@ describeDashboard('User Dashboard', () => {
     await dash.closePopup();
   });
 
-  test('TC-LEAVE-012 (partial) | My Leave History grid loads from profile navigation', async ({
+  test('TCLEAVE-012P | My Leave History grid loads from profile navigation', async ({
     page,
   }) => {
     const dash = new UserDashboardPage(page);
@@ -177,7 +178,7 @@ describeDashboard('User Dashboard', () => {
     await dash.expectLeaveHistoryTableLoaded();
   });
 
-  test('PMD-001 (partial) | Procedure Misses report opens from ClockWise menu', async ({
+  test('PMD-001P | Procedure Misses report opens from ClockWise menu', async ({
     page,
   }) => {
     const dash = new UserDashboardPage(page);

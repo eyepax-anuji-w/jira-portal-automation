@@ -84,8 +84,8 @@ export class UserDashboardPage extends BasePage {
   }
 
   protected async _freshLogin(): Promise<void> {
-    const userId = process.env.E2E_USER_ID ?? '';
-    const password = process.env.E2E_PASSWORD ?? '';
+    const userId = process.env.E2E_ATL_ID || process.env.E2E_USER_ID || '';
+    const password = process.env.E2E_ATL_PASSWORD || process.env.E2E_PASSWORD || '';
 
     await this.page.goto(loginPagePath());
     await this.page.waitForLoadState('domcontentloaded');
@@ -250,6 +250,23 @@ export class UserDashboardPage extends BasePage {
   /** Widget10 control shown when landing on Cultural Dashboard or returning from deep links. */
   async clickUserDashboardFromToolbar(): Promise<void> {
     await this.controlsFrame().getByRole('button', { name: 'User Dashboard' }).click({ timeout: 20_000 });
+    await this.waitForNetworkSettled();
+    await waitForFrameBody(this.dashboardNavFrame(), 25_000).catch(() => {});
+    await this.yearDropdown().waitFor({ state: 'visible', timeout: 25_000 }).catch(() => {});
+  }
+
+  /**
+   * Use this after navigating to profile/report pages where the User Dashboard button
+   * is rendered directly in `EYEPAX_iframe` content (not widget10).
+   */
+  async navigateFromAnyPageToUserDashboard(): Promise<void> {
+    const directButton = this.content().getByRole('button', { name: 'User Dashboard' }).first();
+    const toolbarButton = this.controlsFrame().getByRole('button', { name: 'User Dashboard' }).first();
+    if (await directButton.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      await directButton.click({ timeout: 20_000 });
+    } else {
+      await toolbarButton.click({ timeout: 20_000 });
+    }
     await this.waitForNetworkSettled();
     await waitForFrameBody(this.dashboardNavFrame(), 25_000).catch(() => {});
     await this.yearDropdown().waitFor({ state: 'visible', timeout: 25_000 }).catch(() => {});

@@ -1,9 +1,13 @@
-export type Role = 'user' | 'supervisor' | 'admin';
+export type Role = 'user' | 'atl' | 'supervisor' | 'admin';
 
 export const Users = {
   user: {
     id: process.env.E2E_USER_ID ?? '',
     password: process.env.E2E_PASSWORD ?? '',
+  },
+  atl: {
+    id: process.env.E2E_ATL_ID ?? '',
+    password: process.env.E2E_ATL_PASSWORD ?? '',
   },
   supervisor: {
     id: process.env.E2E_SUPERVISOR_ID ?? '',
@@ -22,6 +26,7 @@ export function hasUserCredentials(): boolean {
 export function storageStatePath(role: Role): string {
   const map: Record<Role, string> = {
     user: 'auth/user.json',
+    atl: 'auth/atl.json',
     supervisor: 'auth/supervisor.json',
     admin: 'auth/admin.json',
   };

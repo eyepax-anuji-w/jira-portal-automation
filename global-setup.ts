@@ -15,6 +15,7 @@ export default async function globalSetup(_config: FullConfig): Promise<void> {
 
   const roles: Array<{ file: string; id?: string; pass?: string }> = [
     { file: 'user.json', id: process.env.E2E_USER_ID, pass: process.env.E2E_PASSWORD },
+    { file: 'atl.json', id: process.env.E2E_ATL_ID, pass: process.env.E2E_ATL_PASSWORD },
     {
       file: 'supervisor.json',
       id: process.env.E2E_SUPERVISOR_ID,

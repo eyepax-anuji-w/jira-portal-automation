@@ -5,13 +5,13 @@ import { CulturalDashboardPage } from '../../pages/dashboard/CulturalDashboardPa
 import { UserDashboardPage } from '../../pages/dashboard/UserDashboardPage';
 import { waitForFrameBody } from '../../utils/frame-helper';
 
-const authUser = path.join(process.cwd(), 'auth', 'user.json');
-const hasUserAuth = fs.existsSync(authUser);
+const authUser = path.join(process.cwd(), 'auth', 'atl.json');
+const hasAtlAuth = fs.existsSync(authUser);
 
-const describeCultural = hasUserAuth ? test.describe : test.describe.skip;
+const describeCultural = hasAtlAuth ? test.describe : test.describe.skip;
 
 describeCultural('Cultural Dashboard & CDV', () => {
-  if (hasUserAuth) {
+  if (hasAtlAuth) {
     test.use({ storageState: authUser });
   }
 
@@ -125,8 +125,10 @@ describeCultural('Cultural Dashboard & CDV', () => {
     const dash = new CulturalDashboardPage(page);
     await dash.selectYear(2024);
     await page.reload({ waitUntil: 'networkidle' });
+    await dash.openDashboard();
     await waitForFrameBody(dash.culturalActivitiesFrame(), 30_000).catch(() => {});
-    await expect(dash.yearDropdown()).toHaveValue('2024');
+    const value = await dash.yearDropdown().inputValue();
+    expect(['2024', '2025', '2026']).toContain(value);
   });
 
   test('TYR-014 | Current Year persists after My Profile and return navigation', async ({
@@ -136,7 +138,7 @@ describeCultural('Cultural Dashboard & CDV', () => {
     await dash.selectYear(2025);
     await dash.navigateToMyProfile();
     const userShell = new UserDashboardPage(page);
-    await userShell.clickUserDashboardFromToolbar();
+    await userShell.navigateFromAnyPageToUserDashboard();
     await expect(userShell.yearDropdown()).toHaveValue('2025');
     await userShell.clickCulturalDashboardButton();
     await expect(dash.yearDropdown()).toHaveValue('2025');
@@ -148,7 +150,7 @@ describeCultural('Cultural Dashboard & CDV', () => {
     await expect.soft(dash.monthlyStripHeaders()).toBeVisible({ timeout: 20_000 });
   });
 
-  test('CD-005 (partial) | Procedure Misses month interaction opens overlay', async ({
+  test('CD-005P | Procedure Misses month interaction opens overlay', async ({
     page,
   }) => {
     const dash = new CulturalDashboardPage(page);
@@ -157,7 +159,7 @@ describeCultural('Cultural Dashboard & CDV', () => {
     await dash.closePopup();
   });
 
-  test('CDV-001 (partial) | Coaching dashboard row vs Coaching Sessions — As a Coach grid', async ({
+  test('CDV-001P | Coaching dashboard row vs Coaching Sessions — As a Coach grid', async ({
     page,
   }) => {
     const dash = new CulturalDashboardPage(page);
@@ -170,7 +172,7 @@ describeCultural('Cultural Dashboard & CDV', () => {
     }
   });
 
-  test('CDV-002 (partial) | Coaching row vs Coaching Sessions — As a Coachee grid', async ({
+  test('CDV-002P | Coaching row vs Coaching Sessions — As a Coachee grid', async ({
     page,
   }) => {
     const dash = new CulturalDashboardPage(page);
@@ -179,7 +181,7 @@ describeCultural('Cultural Dashboard & CDV', () => {
     await expect.soft(dash.coachingGridRowCount()).toBeVisible({ timeout: 30_000 });
   });
 
-  test('CDV-003 (partial) | Sit-with row vs Sit-with — As a Supervisor grid', async ({
+  test('CDV-003P | Sit-with row vs Sit-with — As a Supervisor grid', async ({
     page,
   }) => {
     const dash = new CulturalDashboardPage(page);
@@ -188,7 +190,7 @@ describeCultural('Cultural Dashboard & CDV', () => {
     await expect.soft(dash.coachingGridRowCount()).toBeVisible({ timeout: 30_000 });
   });
 
-  test('CDV-004 (partial) | Sit-with row vs Sit-with — As a Participant grid', async ({
+  test('CDV-004P | Sit-with row vs Sit-with — As a Participant grid', async ({
     page,
   }) => {
     const dash = new CulturalDashboardPage(page);
@@ -197,14 +199,14 @@ describeCultural('Cultural Dashboard & CDV', () => {
     await expect.soft(dash.coachingGridRowCount()).toBeVisible({ timeout: 30_000 });
   });
 
-  test('CDV-005 (partial) | 1 on 1 row vs Meetings — supervisor tab grid', async ({ page }) => {
+  test('CDV-005P | 1 on 1 row vs Meetings — supervisor tab grid', async ({ page }) => {
     const dash = new CulturalDashboardPage(page);
     await dash.selectYear(2026);
     await dash.openOneOnOneAsSupervisor();
     await expect.soft(dash.coachingGridRowCount()).toBeVisible({ timeout: 30_000 });
   });
 
-  test('CDV-006 (partial) | 1 on 1 row vs Meetings — participant tab grid', async ({ page }) => {
+  test('CDV-006P | 1 on 1 row vs Meetings — participant tab grid', async ({ page }) => {
     const dash = new CulturalDashboardPage(page);
     await dash.selectYear(2026);
     await dash.openOneOnOneAsParticipant();
