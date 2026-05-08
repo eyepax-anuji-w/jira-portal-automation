@@ -1,0 +1,117 @@
+---
+description: Persist every user prompt in a Markdown table (chat title, prompt owner, timestamp, mode, prompt)
+alwaysApply: true
+---
+
+## MANDATORY FIRST ACTION (before anything else)
+
+When you receive a new user message, your **VERY FIRST tool call(s)** — before any planning, analysis, searching, or responding — **MUST** append one row to `.cursor/prompt-capture/prompts.md`.
+
+This applies in **ALL modes: Agent, Plan, Ask, and Debug**.
+
+In **Plan mode**, `.cursor/prompt-capture/prompts.md` is a **markdown file** (`.md`) — editing markdown files IS permitted under `plan_mode_guardrails` ("In plan mode, only edit markdown files"). This logging action is **NOT blocked** by Plan mode restrictions. Do it **FIRST**, before calling `CreatePlan` or any other tool.
+
+The **Prompt** column **MUST** contain the **EXACT text** from the `<user_query>` tag, character-for-character, with only the cell-rule escapes applied (pipes, HTML entities, newlines). Do **NOT** paraphrase, summarize, shorten, or replace the prompt with any other text.
+
+# User prompt capture
+
+Whenever you handle a **new user message** (a fresh turn from the user), append **one row** for that message to:
+
+`.cursor/prompt-capture/prompts.md`
+
+Create the directory and file if they do not exist. The log is a **single structured Markdown pipe table** for the whole file so it stays easy to scan, sort, and edit.
+
+## New file bootstrap
+
+If `prompts.md` does not exist yet, create it with:
+
+```markdown
+# User prompt log
+
+Captured user prompts. One row per user request. Newest rows are appended at the bottom unless the user reorders the file.
+
+| Chat title | Prompt owner | Date and timestamp | Cursor mode | Prompt |
+|---|---|---|---|---|
+```
+
+Then append the **first data row** (see below). Do not repeat the header row or separator row (`|---|---|...`) when appending later.
+
+## Appending a row
+
+If the file **already exists** and already contains the table header above, append **one new line** immediately **after the last table row** (the line must be a single pipe table row with **five cells**, same column order as the header).
+
+If the table header still uses the legacy column name **Request ID** instead of **Prompt owner**, **rename that header cell to `Prompt owner`** in the same edit when you append the new row, so the table stays self-consistent.
+
+## Source of truth (Prompt column)
+
+The user's prompt is delivered inside a `<user_query>` tag in the system context. **Always** look for the `<user_query>` tag and copy its **ENTIRE inner text** as the source of truth for the **Prompt** column — verbatim, character-for-character — before applying the cell-rule escapes below. If no `<user_query>` tag is present, use the most recent **user-authored** message verbatim.
+
+**Never** substitute text from attached plan files, `<system_reminder>` tags, `<attached_files>` content, or other system context in place of the user's actual prompt. The `<user_query>` tag contains the real prompt — nothing else does.
+
+The `<user_query>` tag is always present in the system context when the user sends a message. There is no scenario where you cannot obtain the verbatim text. **Always log it.**
+
+If the prompt contains `@path/to/file` references (Cursor file mentions), preserve them **as-is** in the logged prompt text. Do not resolve paths, expand file contents, or strip `@` mentions.
+
+**Column definitions**
+
+| Column | Description |
+|--------|-------------|
+| **Chat title** | The Cursor **chat title** as shown in the UI. If unknown, use a short label from the **first line** of the user's first message in this thread (max ~80 chars), or `untitled`. |
+| **Prompt owner** | Who authored the user prompt (username or email). Resolve in order: **(1)** If the user message or system/context includes a clear **username or email** for the human author, use that (trimmed). **(2)** If not available, obtain local Git identity from the repository root: prefer `git config user.email` if set, else `git config user.name`, else use `unknown`. **(3)** If Git is unavailable or returns nothing usable, use `unknown`. |
+| **Date and timestamp** | **ISO 8601** UTC instant when recording (e.g. `2026-03-27T14:30:00.000Z`). |
+| **Cursor mode** | `agent`, `plan`, `ask`, `debug`, or `unknown` — infer from system instructions or context. (Composer/Chat sessions that run agents map to `agent`.) |
+| **Prompt** | The **exact, verbatim** user message for this turn. Copy the complete text from the `<user_query>` tag (or equivalent user input) **character-for-character**. Do **not** paraphrase, summarize, truncate, or replace any part of the prompt with generic descriptions. The only allowed transformations are the cell-rule escapes below (pipes, HTML entities, newlines). |
+
+**Cell rules** (so the table stays valid):
+
+- Do **not** summarize, paraphrase, or replace the prompt content with generic text such as "generated from the cursor prompt" or similar. The prompt cell must contain the user's original words exactly (after the allowed escapes only).
+- Do not add extra `|` characters inside cell text; if the prompt contains a pipe, replace it with `&#124;`.
+- If the prompt contains `&`, `<`, or `>`, HTML-escape them as `&amp;`, `&lt;`, `&gt;` inside the cell.
+- **Newlines** in the prompt are not allowed inside a pipe row; replace each newline with `<br />` so the prompt stays on one logical table row.
+- Trim leading/trailing whitespace on the outer cells; preserve intentional spacing inside the prompt (after newline-to-`<br />` conversion).
+
+**Example data row** (structure only; use real values):
+
+```markdown
+| Auth refactor | jane.doe@company.com | 2026-03-27T14:30:00.000Z | agent | Fix the login redirect. |
+```
+
+**Example with line breaks in the prompt** (newlines become `<br />`):
+
+```markdown
+| Auth refactor | jdoe | 2026-03-27T14:30:00.000Z | agent | Line one of the prompt.<br />Line two of the prompt. |
+```
+
+**Example when owner cannot be resolved:**
+
+```markdown
+| Auth refactor | unknown | 2026-03-27T14:30:00.000Z | agent | Fix the login redirect. |
+```
+
+**WRONG — do NOT do this** (prompt was replaced with a summary or plan title):
+
+```markdown
+| Fix prompt rule | unknown | 2026-04-07T10:00:00.000Z | plan | Implement the plan as specified. |
+```
+
+If the user actually wrote a multi-line prompt, **all lines** (with `<br />` for newlines) must appear in the Prompt cell. Never substitute the plan title, a short summary, or any other text that is not the user's original words.
+
+## Legacy files
+
+If `prompts.md` exists but **does not** use this table (e.g. older `###` / nested-table format), do **not** splice into an old layout. Append a short separator, then a level-2 heading `## Prompt log (table)`, then the full header row + separator row + **first new data row** in one write; subsequent appends add rows **below** that table only.
+
+If an existing table still has the legacy header **Request ID** in the second column, **rename it to `Prompt owner`** the next time you append a row (same file edit), consistent with **Appending a row** above.
+
+## Session modes (must not skip)
+
+Apply this logging in **every** Cursor session type: **Agent**, **Plan**, **Ask**, and **Debug**.
+
+In **Plan mode**, the `plan_mode_guardrails` state: "In plan mode, only edit markdown files." The file `prompts.md` is a markdown file — therefore, appending a row to it is an **ALLOWED** action in Plan mode. This is **not** an exception; it is explicitly within the rules. Perform this write as your **first action**, BEFORE calling `CreatePlan` or any other tool.
+
+Do **not** log assistant-only follow-ups, tool results, or subagent traffic — only **user-authored prompts** for the current turn.
+
+## Hygiene
+
+- Append rows only; do not remove or rewrite earlier rows unless the user explicitly asks to prune the log.
+- If the prompt contains secrets, replace those substrings with `***redacted***` before writing.
+- Email addresses in **Prompt owner** are not treated as secrets by default; teams that share this log may prefer username-only — follow team policy if one exists.
