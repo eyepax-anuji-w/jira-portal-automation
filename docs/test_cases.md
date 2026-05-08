@@ -46,34 +46,82 @@
 
 ## Dashboard Module
 
+Selectors and iframe chains follow [`details-locators.md`](../details-locators.md): `EYEPAX_iframe` → `dbifrm_widget6` (User Dashboard controls), `widget7` Leave Summary, `widget8` Cultural Activities, `widget9` Procedure Misses, `widget10` Cultural mode controls, `#popupIframe` overlays.
+
 ### Cultural Dashboard (`tests/dashboard/cultural-dashboard.spec.ts`)
 
 | ID | Title | Status | Notes |
 |----|-------|--------|-------|
-| CDV-001 | Cultural dashboard loads with Cultural Activities and Procedure Misses panels | Automated | widget8 + widget9 |
-| CDV-002 | Cultural Activity Summary table is visible | Automated | widget8 |
-| CDV-003 | Coaching row present in summary table | Automated | Bug IEJP-9366 resolved — `test.fail` removed |
-| CDV-004 | Cultural Activities heading shows current and previous year | Automated | widget8 |
-| CDV-005 | Procedure Misses heading shows JUN–MAY fiscal range | Automated | widget9; date range is JUN–MAY fiscal year |
-| CDV-006 | Select year 2025 updates Cultural Activities heading | Automated | widget10 year-select |
-| CDV-007 | Select year 2024 updates Cultural Activities heading | Automated | widget10 year-select |
-| CDV-008 | Empty-year behavior uses stable UI (soft) | Automated | soft assertions; avoids live-count brittleness |
+| CD-001 | Loads Cultural Activities and Procedure Misses panels | Automated | widget8 + widget9 |
+| CD-003 | Most Recent Events + summary table structure | Automated | widget8 |
+| CD-002 | Current Year dropdown visible | Automated | widget10 `#year-select` |
+| CD-004 | Procedure Misses: Top 3 section + monthly strip | Automated | widget9 |
+| CD-005 (partial) | Month interaction opens overlay popup | Automated | widget9 → `#popupIframe` |
+| UDY-006 | Procedure Misses fiscal heading updates with year | Automated | `HEADING_PATTERNS.procedureMisses` |
+| UDY-007 | Cultural summary + Procedure Misses year labels refresh | Automated | widget8 / widget9 column headers |
+| UDY-008 | Selected year persists after browser refresh | Automated | widget10 |
+| TYR-014 | Year persists after My Profile → User Dashboard → Cultural Dashboard | Automated | widget10 ↔ widget6 navigation |
+| CDV-001 | Coaching Conducted row visible | Automated | widget8 grid row |
+| CDV-002 | Coaching Participated row visible | Automated | widget8 |
+| CDV-003 | Sit-with Conducted row visible | Automated | widget8 |
+| CDV-004 | Sit-with Participated row visible | Automated | widget8 |
+| CDV-005 | 1 on 1 Conducted row visible | Automated | widget8 |
+| CDV-006 | 1 on 1 Participated row visible | Automated | widget8 |
+| CDV-007 | Year switch updates Cultural Activities headings | Automated | widget10 → widget8 |
+| CDV-008 | Empty-year UI stable (soft) | Automated | widget8 table |
+| CDV-001 (partial) | Coaching Sessions — As a Coach grid loads | Automated (partial) | Structural; count parity not asserted |
+| CDV-002 (partial) | Coaching Sessions — As a Coachee grid loads | Automated (partial) | Same |
+| CDV-003 (partial) | Sit-with — As a Supervisor grid loads | Automated (partial) | Same |
+| CDV-004 (partial) | Sit-with — As a Participant grid loads | Automated (partial) | Same |
+| CDV-005 (partial) | 1 on 1 — supervisor tab grid loads | Automated (partial) | Same |
+| CDV-006 (partial) | 1 on 1 — participant tab grid loads | Automated (partial) | Same |
 
 ### User Dashboard (`tests/dashboard/user-dashboard.spec.ts`)
 
 | ID | Title | Status | Notes |
 |----|-------|--------|-------|
-| UDL-001 | User dashboard loads Current Year dropdown and Leave Summary | Automated | widget6 year-select + widget7 |
-| UDL-002 | Current Year dropdown shows year options | Automated | widget6 `#year-select` options |
-| UDY-003 | Select year 2026 updates Leave Summary heading | Automated | widget6 → widget7 |
-| UDY-004 | Select year 2025 updates Leave Summary heading | Automated | widget6 → widget7 |
-| UDY-005 | Select year 2024 updates Leave Summary heading | Automated | widget6 → widget7 |
-| UDL-003 | Selecting 2024 updates Leave Summary heading | Automated | widget6 → widget7 |
-| UDL-004 | Selecting 2026 updates Leave Summary heading | Automated | widget6 → widget7 |
-| UDL-005 | Selecting 2025 updates Leave Summary heading | Automated | widget6 → widget7 |
-| UDY-009 | Switching years repeatedly keeps Leave Summary heading consistent | Automated | loop: 2026 → 2025 → 2024 → 2026 |
+| UDL-001 | Loads Current Year dropdown and Leave Summary | Automated | widget6 + widget7 |
+| UDL-002 | Current Year dropdown shows year options | Automated | widget6 `#year-select` |
+| UDL-003 … UDL-005 | Leave Summary heading for 2024 / 2026 / 2025 | Automated | widget6 → widget7 |
+| UDY-003 … UDY-005 | Same (duplicate CSV IDs) | Automated | widget6 → widget7 |
+| UDY-009 | Repeated year switches keep Leave Summary consistent | Automated | widget7 |
+| UDL-006 | Notice Summary “No Records Found” for 2024 (soft) | Automated | widget7; data-dependent |
+| UDL-007 | Notice Summary column groups (Total Used / Correct / Short / No Notice) | Automated | widget7 |
+| TC-LEAVE-007 | Notice headers + year sub-columns | Automated | widget7 |
+| UDL-008 / TC-LEAVE-009 | Leave type rows (Casual, Annual, Medical, Lieu, No-Pay) | Automated | widget7 |
+| UDL-009 | Notice year columns refresh when year changes | Automated | widget7 |
+| UDL-010 | Rapid year switching + Notice Summary stable | Automated | widget7 |
+| UDL-011 | Selected year + heading after page reload | Automated | widget6 |
+| TC-LEAVE-002 | Top navigation links visible | Automated | page chrome |
+| TC-LEAVE-005 | Upcoming leaves / pending message visible | Automated | widget7 banner |
+| TC-LEAVE-010 | User Profile button leaves dashboard view | Automated | widget6 |
+| TC-LEAVE-011 | Cultural Dashboard button shows widget8 | Automated | widget6 → widget8 |
+| TC-LEAVE-020 | Leave type link opens `#popupIframe` with Close | Automated | widget7 + popup |
+| TC-LEAVE-012 (partial) | My Leave History table loads | Automated (partial) | Profile navigation |
+| PMD-001 (partial) | Procedure Misses report grid from ClockWise | Automated (partial) | widget2 table smoke |
 
-> **Scope note:** User Dashboard tests only assert Leave Summary (widget7). Cultural Activities (widget8) and Procedure Misses (widget9) are not present in User Dashboard view and are covered exclusively by `cultural-dashboard.spec.ts`.
+### User Dashboard — authorization (`tests/dashboard/user-dashboard.spec.ts`)
+
+| ID | Title | Status | Notes |
+|----|-------|--------|-------|
+| UDL-013 | `/EYEPAX/` not usable when logged out | Automated | Empty `storageState`; expects login or denied |
+
+### Dashboard — manual / not UI-automated / pending product rules
+
+| ID | Source CSV | Classification | Reason |
+|----|------------|----------------|--------|
+| UDY-001 … UDY-005, UDY-008, UDY-009, UDY-010, TYR-014 | Change year / User dash CSV | Covered by automated equivalents where noted | UDY-010 negative year: partial UI only |
+| UDY-013 | Cross-browser year switch | Manual | Release matrix per `test cases` CSV |
+| UDY-014, TYR-015, UDL-012 | Keyboard a11y | Manual | Dedicated a11y tooling |
+| UDY-003 … UDY-005 (Culture headings) | Culture + year | Covered | See UDY-006/007 in cultural spec |
+| CD-005 full drill | Dashboard vs ClockWise sum | Partial / manual | Long multi-step reconciliation; dynamic data |
+| PMD-002 … PMD-007 | Month vs report totals | Manual / data-dependent | Count parity needs stable dataset |
+| TC-LEAVE-012 full | Dashboard vs My Leave History sums | Partial | Needs controlled leave data + filters |
+| TC-LEAVE-013 … TC-LEAVE-018 | Reconciliation & boundary rules | Pending / manual | Cancelled-leave rule, rounding, cross-year split need AC |
+| TC-LEAVE-019 | Two-user leakage | Blocked | Needs second stored auth (`auth/supervisor.json`) |
+| TC-LEAVE-020 full | Popup vs leave report parity | Partial | IEJP-9367 navigation bug noted in CSV |
+
+> **Scope note:** On **User Dashboard** view, automated assertions focus on Leave Summary + Notice Summary (widget7) and navigation from widget6. **Cultural Dashboard** view covers widget8–widget10 via `cultural-dashboard.spec.ts`.
 
 ## Teams Module
 

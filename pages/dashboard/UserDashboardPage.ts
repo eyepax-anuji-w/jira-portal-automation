@@ -1,3 +1,4 @@
+import type { FrameLocator, Locator } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { HEADING_PATTERNS } from '../../test-data/expected-values';
 import { ModuleURLs, loginPagePath } from '../../test-data/module-urls';
@@ -149,5 +150,175 @@ export class UserDashboardPage extends BasePage {
     await expect
       .soft(this.leaveSummaryFrame().getByText(/LEAVE SUMMARY/i).first())
       .toBeVisible({ timeout: 25_000 });
+  }
+
+  /** Popup overlay used by leave drill-downs and procedure miss details (`details-locators.md`). */
+  popupFrame(): FrameLocator {
+    return this.page.frameLocator('#popupIframe');
+  }
+
+  async closePopup(): Promise<void> {
+    const close = this.popupFrame().getByText('Close', { exact: true }).first();
+    await close.click({ timeout: 15_000 }).catch(() => {});
+    await this.popupFrame()
+      .locator('body')
+      .waitFor({ state: 'hidden', timeout: 10_000 })
+      .catch(() => {});
+  }
+
+  noticeSummaryHeading(): Locator {
+    return this.leaveSummaryFrame().getByRole('heading', { name: /Notice Summary/i });
+  }
+
+  async expectNoticeSummaryHeadersVisible(): Promise<void> {
+    const f = this.leaveSummaryFrame();
+    await expect.soft(f.getByRole('cell', { name: 'Total Used', exact: true }).first()).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect.soft(f.getByRole('cell', { name: 'Correct Notice', exact: true }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect.soft(f.getByRole('cell', { name: 'Short Notice', exact: true }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect.soft(f.getByRole('cell', { name: 'No Notice', exact: true }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+  }
+
+  async expectNoticeYearColumnHeaders(year: number): Promise<void> {
+    const prev = year - 1;
+    const f = this.leaveSummaryFrame();
+    await expect.soft(f.getByRole('cell', { name: String(year), exact: true }).first()).toBeVisible({
+      timeout: 20_000,
+    });
+    await expect.soft(f.getByRole('cell', { name: String(prev), exact: true }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+  }
+
+  async expectNoRecordsFoundInNoticeSummary(): Promise<void> {
+    await expect(
+      this.leaveSummaryFrame().getByText(/No Records Found/i).first(),
+    ).toBeVisible({ timeout: 25_000 });
+  }
+
+  /** Expected leave type labels on the dashboard grid (configurable per env). */
+  async expectLeaveTypeRowsPresent(
+    types: readonly string[] = ['Casual', 'Annual', 'Medical', 'Lieu', 'No-Pay'],
+  ): Promise<void> {
+    const f = this.leaveSummaryFrame();
+    for (const t of types) {
+      await expect.soft(f.getByRole('cell', { name: t, exact: true }).first()).toBeVisible({
+        timeout: 20_000,
+      });
+    }
+  }
+
+  upcomingLeavesBanner(): Locator {
+    return this.leaveSummaryFrame().locator('body').filter({
+      hasText: /upcoming leaves|pending leave request|PENDING/i,
+    });
+  }
+
+  async expectUpcomingLeavesAreaVisible(): Promise<void> {
+    const text = this.leaveSummaryFrame().getByText(
+      /HAS NO UPCOMING|has no upcoming leaves|pending leave request|PENDING HR|PENDING SUPERVISOR/i,
+    );
+    await expect(text.first()).toBeVisible({ timeout: 25_000 });
+  }
+
+  userProfileButton(): Locator {
+    return this.dashboardNavFrame().getByRole('button', { name: /User Profile/i });
+  }
+
+  culturalDashboardButton(): Locator {
+    return this.dashboardNavFrame().getByRole('button', { name: /Cultural Dashboard/i });
+  }
+
+  async clickUserProfileButton(): Promise<void> {
+    await this.userProfileButton().click({ timeout: 15_000 });
+    await this.waitForNetworkSettled();
+  }
+
+  async clickCulturalDashboardButton(): Promise<void> {
+    await this.culturalDashboardButton().click({ timeout: 15_000 });
+    await this.waitForNetworkSettled();
+    await waitForFrameBody(this.culturalActivitiesFrame(), 25_000).catch(() => {});
+  }
+
+  /** Widget10 control shown when landing on Cultural Dashboard or returning from deep links. */
+  async clickUserDashboardFromToolbar(): Promise<void> {
+    await this.controlsFrame().getByRole('button', { name: 'User Dashboard' }).click({ timeout: 20_000 });
+    await this.waitForNetworkSettled();
+    await waitForFrameBody(this.dashboardNavFrame(), 25_000).catch(() => {});
+    await this.yearDropdown().waitFor({ state: 'visible', timeout: 25_000 }).catch(() => {});
+  }
+
+  leaveTypeLink(name: string | RegExp): Locator {
+    return this.leaveSummaryFrame().getByRole('link', { name });
+  }
+
+  async expectTopNavLinksVisible(): Promise<void> {
+    await expect.soft(this.page.getByRole('link', { name: /Teams/i }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+    await expect.soft(this.page.getByRole('link', { name: /^User$/i }).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await expect.soft(this.page.getByRole('link', { name: /Projects/i }).first()).toBeVisible({
+      timeout: 10_000,
+    });
+    await expect.soft(this.page.getByRole('link', { name: 'ClockWise', exact: true })).toBeVisible({
+      timeout: 10_000,
+    });
+  }
+
+  async navigateUserMenuToMyProfile(): Promise<void> {
+    await this.page.getByRole('link', { name: /^User$/i }).first().click({ timeout: 15_000 });
+    await this.page.getByRole('link', { name: /My Profile/i }).first().click({ timeout: 15_000 });
+    await this.waitForNetworkSettled();
+    await waitForFrameBody(this.content(), 20_000).catch(() => {});
+  }
+
+  async navigateClockWiseToProcedureMisses(): Promise<void> {
+    await this.page.getByRole('link', { name: 'ClockWise', exact: true }).click({ timeout: 15_000 });
+    await this.page.getByRole('link', { name: /ClockWise Data/i }).first().click({ timeout: 15_000 });
+    await this.page.getByRole('link', { name: /Procedure Misses/i }).first().click({ timeout: 15_000 });
+    await this.waitForNetworkSettled();
+    await waitForFrameBody(this.content(), 25_000).catch(() => {});
+  }
+
+  /** Report grid inside nested iframe (see `details-locators.md` ClockWise → Procedure Misses). */
+  procedureMissesReportGrid(): Locator {
+    return this.page
+      .frameLocator('iframe[name="EYEPAX_iframe"]')
+      .frameLocator('iframe[name="dbifrm_widget2"]')
+      .locator('table')
+      .first();
+  }
+
+  /** User Profile → Request Leave area: search for My Leave History link/text. */
+  async openMyLeaveHistoryFromProfile(): Promise<void> {
+    await this.navigateUserMenuToMyProfile();
+    const root = this.content();
+    const historyLink = root.getByRole('link', { name: /My Leave History/i }).first();
+    const requestLeave = root.getByRole('link', { name: /Request Leave/i }).first();
+    if (await historyLink.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      await historyLink.click();
+    } else if (await requestLeave.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      await requestLeave.click();
+      const innerHistory = root.getByRole('link', { name: /My Leave History/i }).first();
+      await innerHistory.waitFor({ state: 'visible', timeout: 15_000 }).catch(() => {});
+      await innerHistory.click({ timeout: 15_000 }).catch(() => {});
+    }
+    await this.waitForNetworkSettled();
+    await waitForFrameBody(this.grid(), 25_000).catch(() => {});
+  }
+
+  async expectLeaveHistoryTableLoaded(): Promise<void> {
+    const gridVisible = await this.grid().locator('table').first().isVisible({ timeout: 20_000 }).catch(() => false);
+    const altTable = await this.content().locator('table').first().isVisible({ timeout: 10_000 }).catch(() => false);
+    expect(gridVisible || altTable).toBeTruthy();
   }
 }

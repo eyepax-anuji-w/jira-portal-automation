@@ -7,8 +7,8 @@ Execution summaries are appended by `npm run coverage:update` (reads `test-resul
 | Module | Total Cases | Automated | Pending | Blocked | Manual |
 | ---- | ---- | ---- | ---- | ---- | ---- |
 | Login | 22 | 17 | 1 | 4 | 4 |
-| Dashboard (Cultural) | 8 | 8 | 0 | 0 | 0 |
-| Dashboard (User) | 9 | 9 | 0 | 0 | 0 |
+| Dashboard (Cultural) | 23 | 23 | 0 | 0 | 0 |
+| Dashboard (User) | 24 | 24 | 0 | 0 | 0 |
 | Teams | - | - | - | - | - |
 | WhatsApp | - | - | - | - | - |
 
@@ -36,6 +36,7 @@ Execution summaries are appended by `npm run coverage:update` (reads `test-resul
 | 2026-05-07 | login | 19 | 14 | 0 | 5 | junit.xml |
 | 2026-05-07 | dashboard | 19 | 15 | 4 | 0 | UDY-003/004/005/009 failing (widget8 assertions invalid in User Dashboard view) |
 | 2026-05-07 | dashboard | 19 | 19 | 0 | 0 | All 19 dashboard cases passing after widget frame + year-select mapping fixes |
+| 2026-05-08 | dashboard | 47 | 30 | 7 | 0 | junit.xml |
 
 ---
 
