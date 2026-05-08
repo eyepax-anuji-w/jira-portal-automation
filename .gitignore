@@ -1,0 +1,16 @@
+node_modules/
+/test-results/
+/playwright-report/
+/reports/
+/coverage-reports/
+/allure-report/
+/allure-results/
+/playwright/.cache/
+/auth/
+/recordings/
+
+# Secrets — template stays committed
+.env
+.env.local
+!.env.example
+details-locators.md

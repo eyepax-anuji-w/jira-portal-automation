@@ -1,0 +1,35 @@
+{
+  "name": "jira-portal",
+  "version": "1.0.0",
+  "description": "Playwright E2E automation for Scriptcase JIRA Portal",
+  "scripts": {
+    "test": "node scripts/run-tests.js all",
+    "test:ui": "playwright test --ui",
+    "test:headed": "cross-env HEADED=true node scripts/run-tests.js all",
+    "test:auth": "node scripts/run-tests.js login",
+    "test:login": "node scripts/run-tests.js login",
+    "test:login:headed": "cross-env HEADED=true node scripts/run-tests.js login",
+    "test:dashboard": "node scripts/run-tests.js dashboard",
+    "test:grep": "playwright test --grep",
+    "test:ci": "playwright test --reporter=html,junit,allure-playwright",
+    "codegen": "playwright codegen https://jira2-stage.eyepax.info/app_login/",
+    "discover:selectors": "npx ts-node utils/selector-discovery.ts",
+    "report": "playwright show-report",
+    "coverage:update": "node scripts/update-coverage.js",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^22.10.0",
+    "allure-commandline": "^2.32.0",
+    "allure-playwright": "^3.0.6",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

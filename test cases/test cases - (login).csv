@@ -1,0 +1,40 @@
+,Test Case Title,Test Type,Preconditions,Test Steps,Test Data,Expected Result,Priority,Severity,Automation Feasibility,Remarks,Pass/Fail
+LMU-001,Login page loads with required controls,Smoke,App accessible,1. Open http://jira2-stage.eyepax.info/app_login/,N/A,"EYEPAX login page loads with User Id, Password, Sign in, Login with Microsoft, Forgot password link",High,Critical,Yes,,Pass
+LMU-002,Password field masks input,UI/UX,On login page,1. Type in Password field,P@ssw0rd!,Characters are masked (•),Medium,Minor,Yes,,Pass
+LMU-003,Sign in succeeds with valid User Id & Password,Functional,Valid user exists,1. Enter User Id 2. Enter Password 3. Click Sign in,"User: udara.a
+ / Valid password",User is authenticated and redirected to mood popup,High,Critical,Partial,Needs valid credential in test env,Pass
+LMU-004,Login fails with invalid password,Negative,Valid user exists,1. Enter valid User Id 2. Enter wrong password 3. Click Sign in,"User: udara.a
+ / Password: 
+Wrong123","Login blocked; clear error shown; user remains on login page
+
+ERROR The username/password combination is invalid!",High,Major,Yes,,Pass
+LMU-005,Login fails with empty User Id,Negative,On login page,1. Leave User Id empty 2. Enter Password 3. Click Sign in,User Id: empty,"Inline validation shown; login not attempted
+ERROR Username: Required field Password: Required field",High,Major,Yes,Validate field-level error,Pass
+LMU-006,Login fails with empty Password,Negative,On login page,1. Enter User Id 2. Leave Password empty 3. Click Sign in,Password: empty,"Inline validation shown; login not attempted
+ERROR Username: Required field Password: Required field",High,Major,Yes,,Pass
+LMU-007,Both fields empty shows validations for both,Negative,On login page,1. Click Sign in without entering values,N/A,"Both fields show required validation; no redirect
+ERROR Username: Required field Password: Required field",Medium,Major,Yes,,Pass
+LMU-008,“Forgot password ?” navigation works,Functional,On login page,1. Click “Forgot password ?”,N/A,User is navigated to password reset flow/page (or modal),Medium,Major,Partial,,Pass
+FP-01,Forgot Password – Successful reset email request,Smoke / Functional (Happy Path),User exists with a registered email,1. Open Login page2. Click Forgot password ?3. Enter valid User Id4. Click OK,User Id: lakshika.w,Success popup displayed with message “The e-mail has been sent successfully!”; no errors shown,High,Critical,Yes,Core business flow,Pass
+FP-02,Forgot Password – Validation for empty or invalid User Id,Negative / Validation,On Reset Password screen,1. Leave User Id empty OR enter invalid User Id2. Click OK,Empty OR invalid.user,"System blocks request and shows a clear, non-sensitive validation/error message; no success popup",High,Major,Yes,Prevents invalid requests & user confusion,Pass
+FP-03,Forgot Password – Navigation & security behavior,Regression / Security,On Reset Password screen,1. Click Back ? verify login page2. Submit reset for valid and invalid User Ids separately,Valid & invalid User Ids,User is navigated back correctly; system responses do not reveal whether a User Id exists (no user enumeration),Medium,Major,Partial,Covers navigation + security risk,Pass
+FP-04,Forgot Password – Navigation & security behavior,Regression / Security,On Reset Password screen,1. Login with valid username and resetted password,,User able to login,High,Major,Yes,,Pass
+LMU-009,Microsoft login button initiates SSO flow,Smoke,Microsoft SSO configured,1. Click “Login with Microsoft”,N/A,Redirects to Microsoft sign-in/consent page,High,Critical,Partial,External redirect,"Fail - Navigates to the production page
+https://eyepax.atlassian.net/browse/IEJP-9314"
+LMU-010,Microsoft login succeeds and returns to app,Functional,Valid Microsoft account exists,1. Click Login with Microsoft 2. Complete Microsoft sign-in 3. Accept consent if prompted,Microsoft user,Authenticated user lands on mood popup (or dashboard if mood already captured),High,Critical,Partial,Needs SSO test user,"Fail - Navigates to the production page
+
+https://eyepax.atlassian.net/browse/IEJP-9314"
+LMU-011,Microsoft login cancelled by user,Negative,Microsoft sign-in page reached,1. Start SSO 2. Cancel/back,N/A,User returns to app login with a clear message (or remains unauthenticated),Medium,Major,Partial,,Pass
+LMU-012,Mood popup loads after successful login,Smoke,Login success,1. Login (LMU-003 or LMU-010),N/A,Mood popup shows “How Are You Feeling Today ?” and 3 mood icons,High,Critical,Yes,,Pass
+LMU-013,Select Happy mood redirects to dashboard,Functional,Mood popup open,1. Click green happy icon,Happy,Mood recorded and user redirected to dashboard,High,Major,Partial,Confirm persistence if available,Pass
+LMU-014,Select Neutral mood redirects to dashboard,Functional,Mood popup open,1. Click yellow neutral icon,Neutral,Mood recorded and user redirected to dashboard,High,Major,Partial,,Pass
+LMU-015,Select Sad mood redirects to dashboard,Functional,Mood popup open,1. Click red sad icon,Sad,Mood recorded and user redirected to dashboard,High,Major,Partial,,Pass
+LMU-016,Prevent proceeding without mood selection (if required),Negative,Mood popup open,1. Try to navigate away/back/refresh without choosing mood,N/A,System enforces selection ,Medium,Major,Partial,,Pass
+LMU-017,Mood popup appears only once per day/session (if intended),Regression,Mood submitted once,1. Login and submit mood 2. Logout 3. Login again same day,Same user,Mood popup does not reappear when login,Medium,Major,Partial,,Pass
+LMU-018,Session established after login (direct access allowed),Security/Regression,Authenticated session exists,"1. Login 2. Open a protected URL in new tab (e.g., /EYEPAX/
+)",N/A,User needed to relogin,Medium,Major,Yes,,Pass
+LMU-019,Unauthorized access redirects to login,Security,Not logged in,"1. Open /EYEPAX/
+directly",N/A,User is redirected to login page,High,Critical,Yes,,Pass
+LMU-020,Cross-browser smoke for login + mood popup,Compatibility,Browsers available,"1. Run LMU-001, LMU-003, LMU-012, LMU-013 on Chrome/Edge/Firefox",N/A,Same behavior across browsers,Medium,Major,Yes,,Pass
+LMU-021,Accessibility: keyboard navigation on login page,Accessibility,On login page,1. Use Tab/Shift+Tab 2. Verify focus order 3. Press Enter on Sign in,N/A,Logical focus order; controls operable via keyboard,Medium,Minor,Partial,,Pass
+LMU-022,Accessibility: mood icons keyboard operability (if clickable),Accessibility,Mood popup open,1. Tab to mood icons 2. Activate with Enter/Space,N/A,Mood selection possible via keyboard; visible focus indicator,Medium,Minor,Partial,Important for icon-only UI,Pass

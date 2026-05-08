@@ -1,0 +1,24 @@
+---
+description: Enforces Playwright test execution conventions, timestamped reports, and coverage updates
+alwaysApply: true
+---
+
+# Playwright Execution Conventions
+
+## Always use the runner wrapper
+
+- Run tests via `npm run test:login`, `npm run test:dashboard`, or `npm test` (full suite).
+- Do **not** run `npx playwright test` directly for module-level or full-suite runs (CI parity and reporting).
+- Direct `npx playwright test` is only for ad-hoc grep/debug runs.
+
+## After every non–dry-run execution the framework should
+
+1. Generate HTML report under `reports/YYYY-MM-DD-HH-mm-<suite>/` (via `PLAYWRIGHT_HTML_OUTPUT`).
+2. Append a row to `docs/COVERAGE.md` (Date | Module | Total | Passed | Failed | Skipped) via `scripts/update-coverage.js`.
+3. Run `scripts/validate-automation.js` (warn-only) for folder structure, naming, and `docs/test_cases.md` consistency.
+
+## Manual overrides
+
+- `HEADED=true` — visible browser.
+- `SLOW_MO=500` — slow actions for visual monitoring.
+- `--list` / `--help` — dry run; skip coverage and post-run validation where the runner implements it.

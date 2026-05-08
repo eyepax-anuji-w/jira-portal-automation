@@ -1,0 +1,62 @@
+---
+description: Playwright naming, POM, and selector standards for all automation modules
+globs: "tests/**/*.spec.ts,pages/**/*.ts"
+alwaysApply: false
+---
+
+# Automation Standards
+
+## Naming convention
+
+- Test title: `<TestCaseId> | <Module> - <Short scenario>` (regex prefix: `/^[A-Z]+-\d+\s*\|/`).
+- Spec files: `tests/<module>/<feature>.spec.ts`.
+- Page objects: `pages/<module>/<Name>Page.ts` extending `BasePage` where practical.
+
+## Folder structure (each new module)
+
+1. Add URL fragment → `test-data/module-urls.ts`.
+2. Add Page Object → `pages/<module>/`.
+3. Add spec → `tests/<module>/`.
+4. Register coverage in `docs/test_cases.md` (canonical path; Linux CI is case-sensitive).
+
+## Selector priority (Scriptcase)
+
+1. `getByRole` with accessible name.
+2. `getByLabel` / `getByPlaceholder`.
+3. `locator('[name="..."]')`.
+4. `getByText` / `filter({ hasText })`.
+5. Never: dynamic `id` with hash suffix, brittle absolute XPath.
+
+## POM method style
+
+- Methods expose business language, not raw selectors.
+- Iframe resolution for Scriptcase shell: use `BasePage.content()` / `grid()`; dashboard widgets use helpers in `utils/frame-helper.ts` (see below).
+
+## Dashboard two-view architecture
+
+The dashboard uses separate widget iframes (`dbifrm_widget*`). Use the matching page object and frame helpers:
+
+**Cultural Dashboard view (default on load)**
+
+- `widget8` — Cultural Activities (`frameCulturalActivities`).
+- `widget9` — Procedure Misses (`frameProcedureMisses`).
+- `widget10` — controls: `#year-select`, "User Dashboard" (`frameControls` / `controlsFrame()`).
+- `CulturalDashboardPage.yearDropdown()` → `#year-select` inside **widget10**.
+
+**User Dashboard view (after "User Dashboard" in widget10)**
+
+- `widget6` — nav: `#year-select`, "Cultural Dashboard" (`frameDashboardNav` / `dashboardNavFrame()`).
+- `widget7` — Leave Summary (`frameLeaveSummary`).
+- `UserDashboardPage.yearDropdown()` → `#year-select` inside **widget6**.
+
+**Rules**
+
+- Do not assert Cultural panels (`widget8`/`widget9`) from tests that only opened the User Dashboard view.
+- Do not use `UserDashboardPage.yearDropdown()` semantics for Cultural-only specs; `CulturalDashboardPage` overrides `yearDropdown()` for widget10.
+- `CulturalDashboardPage.openDashboard()` must not click "User Dashboard".
+- `UserDashboardPage.openDashboard()` should switch to User view when the Cultural controls frame shows "User Dashboard".
+
+## Docs alignment
+
+- Every automated case should appear in `docs/test_cases.md`.
+- Blocked/skipped tests: include a reason in `test.skip()` / `test.fail()`.

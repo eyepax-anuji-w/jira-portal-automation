@@ -1,0 +1,169 @@
+Change year dropdown,,,,,,,,,,,,
+Test Case ID,Test Case Title,Test Type,Preconditions,Test Steps,Test Data,Expected Result,Priority,Severity,Automation Feasibility,Remarks,Pass/Fail,
+1,Login ? User Dashboard loads with Current Year dropdown,Smoke,Valid user account exists,"1. Open login page 
+2. Enter credentials 
+3. Click Sign in
+4. Navigate to Cultural Activites Dashboard","User Id: valid, Password: valid",User Dashboard loads; Current Year dropdown visible with a default value,High,Critical,Yes,,Pass,
+UDY-002,Current Year dropdown shows available year options,Functional / UI,On User Dashboard,1. Click Current Yeardropdown,"Expected options shown in video: 2026, 2025, 2024","Dropdown lists available years; no duplicates; one option is selected
+Includes 3 year , current year and past 2 years",High,Major,Yes,Options may vary by env; validate at least those visible,Pass,
+UDY-003,Select year 2026 updates headings to (2026 & 2025) and (2025 FEB - 2026 JAN),Functional (Happy Path),On User Dashboard,1. Select 2026 2. Observe headings,Year: 2026,Headings match: CULTURAL ACTIVITIES (2026 & 2025)and PROCEDURE MISSES (2025 FEB - 2026 JAN),High,Major,Yes,Validate text only (stable),Pass,
+UDY-004,Select year 2025 updates headings to (2025 & 2024) and (2024 FEB - 2025 JAN),Functional (Happy Path),On User Dashboard,1. Select 2025 2. Observe headings,Year: 2025,Headings update correctly for 2025 selection,High,Major,Yes,,Pass,
+UDY-005,Select year 2024 updates headings to (2024 & 2023) and (2023 FEB - 2024 JAN),Functional (Happy Path),On User Dashboard,1. Select 2024 2. Observe headings,Year: 2024,Headings update correctly for 2024 selection,High,Major,Yes,,Pass,
+UDY-006,Procedure Misses “Count per Month” year labels refresh based on selected year,Data Integrity / Functional,On User Dashboard,"1. Note current “Count per Month” year labels 2. Change year (e.g., 2026 ? 2025) 3. Re-check year labels",2026 ? 2025,"Month strip year headers change accordingly (e.g., 2025 months vs 2024 months + Jan of next year)",High,Major,Partial,"Verify labels, not exact counts",Pass,
+UDY-007,Cultural Activity Summary table updates year column headers,Functional / Regression,On User Dashboard,1. Change year (2026 ? 2025 ? 2024) 2. Observe Cultural Activity Summary year columns,2026/2025/2024,Table column headers reflect selected year and previous year (as shown in headings),Medium,Major,Partial,Some rows may be off-screen depending on scroll,Pass,
+UDY-008,Selected year remains applied after browser refresh,Regression,Year already changed,"1. Select a year (e.g., 2024) 2. Refresh page",Year: 2024,Page reloads and retains selected yearOR resets to default consistently (define expected),Medium,Major,Yes,Needs PO confirmation if intended behavior is reset,Pass,
+UDY-009,Switching years repeatedly does not break UI or show stale headings,Regression / UX,On User Dashboard,1. Switch years quickly (2026?2025?2024?2026) 2. Observe headings each time,Years cycle,No UI crash; headings always match latest selected year,Medium,Major,Yes,Good for stability,Pass,
+UDY-010,Negative: invalid year cannot be set via UI,Negative / Security,On User Dashboard,1. Attempt to type/paste into dropdown (if editable) or manipulate selection,Example: 2099,UI prevents invalid year selection; only listed years are selectable,Low,Minor,Partial,Only applicable if control allows typing,Pass,
+UDY-013,Cross-browser: year switch works in Chrome/Firefox/Edge,Cross-Browser,Supported browsers installed,1. Open dashboard 2. Change year 3. Verify headings update,2026/2025/2024,Same behavior across browsers,Medium,Major,No,Run per release on target browsers,Pass,
+UDY-014,Accessibility: Current Year dropdown works via keyboard,Accessibility,On User Dashboard,1. Tab to dropdown 2. Open with Enter/Space 3. Select option via keyboard,N/A,Dropdown operable without mouse; focus indicator visible; selection applies,Medium,Minor,Partial,,Pass,
+TYR-014,UI/UX: Year dropdown retains selected value after navigation,UI/UX / Regression,Logged in,1. Select year 2. Navigate away(Teams - >Teams dashboard) 3. Return to dashboard(My Profile -> Cultural activities icon),Year: 2025,Selected year persists (or resets per defined rule) and UI behaves consistently,Medium,Minor,Yes,Rule needs confirmation,Pass,
+TYR-015,Accessibility: Year dropdown keyboard operability,Accessibility,On dashboard,1. Tab to year dropdown 2. Open with Enter/Space 3. Select option with keyboard,N/A,Dropdown usable via keyboard; visible focus indicator,Low,Minor,Partial,,Pass,
+UDL-001,User dashboard loads with Current Year dropdown and Leave Summary section,Smoke,Valid user session,"1. Open .../EYEPAX/
+ 2. Navigate to user dashboard view (if not default)",N/A,"Page loads showing Neranjan Bandara’s Dashboard, Current Yeardropdown, and LEAVE SUMMARYsection",High,Critical,Yes,,Pass,
+UDL-002,Current Year dropdown displays expected options,Functional / UI,On dashboard,1. Click Current Yeardropdown,"Options: 2026, 2025, 2024",Dropdown shows available years and one selected year,High,Major,Yes,Options may vary by env—validate at least those shown,Pass,
+UDL-003,Selecting 2024 updates Leave Summary heading to (2024 & 2023),Functional (Happy Path),On dashboard,1. Select 2024,Year = 2024,Heading shows LEAVE SUMMARY (2024 & 2023)and Current Year shows 2024,High,Major,Yes,Text assertion (stable),Pass,
+UDL-004,Selecting 2026 updates Leave Summary heading to (2026 & 2025),Functional (Happy Path),On dashboard,1. Select 2026,Year = 2026,Heading shows LEAVE SUMMARY (2026 & 2025)and Current Year shows 2026,High,Major,Yes,,Pass,
+UDL-005,Selecting 2025 updates Leave Summary heading to (2025 & 2024),Functional (Happy Path),On dashboard,1. Select 2025,Year = 2025,Heading shows LEAVE SUMMARY (2025 & 2024)and Current Year shows 2025,High,Major,Yes,,Pass,
+UDL-006,Notice Summary displays “No Records Found” when no data exists,Negative / Data,Year with no notice records exists (as in video for 2024),1. Select 2024 2. Scroll/observe Notice Summary,Year = 2024,"Under NOTICE SUMMARY, system shows No Records Found(no broken UI)",Medium,Major,Partial,Confirm which year truly has no data in your test env,Pass,
+UDL-007,Notice Summary table columns render correctly when data exists,Functional / UI,Year with data exists (as in video for 2025/2026),1. Select 2025 (or 2026) 2. Observe Notice Summary header row,Year = 2025,Table shows column groups: Total Used / Correct Notice / Short Notice / No Notice with year columns for selected & previous year,High,Major,Partial,Data values can vary; validate structure,Pass,
+UDL-008,Notice Summary table shows correct Leave Types list,Regression / UI,Notice Summary table visible,1. Select 2025 2. Verify leave types list,"Expected: Casual, Annual, Lieu, Medical, No-Pay",Leave types are listed consistently (no missing/duplicated rows),Medium,Major,Partial,"If leave types are configurable, validate against config",Pass,
+UDL-009,Year change refreshes Notice Summary without stale data,Regression,On dashboard,1. Select 2026 and note one visible cell value 2. Select 2025 3. Verify table year headers/values update,2026 ? 2025,Table year headers update to match selection and previous year; values refresh accordingly (not stuck),Medium,Major,Partial,Avoid strict numeric assertions unless dataset is stable,,
+UDL-010,Rapid year switching does not break UI,Regression / UX,On dashboard,1. Switch year quickly (2024?2026?2025?2024),Sequence above,No UI freeze/crash; headings always match the last selected year,Medium,Major,Yes,Good stability check,Pass,
+UDL-011,Selected year persists after page refresh (or resets consistently),Regression,On dashboard,1. Select 2025 2. Refresh browser,Year = 2025,"Either (A) year remains 2025, or (B) resets to default—must be consistent and documented",Medium,Major,Yes,Needs PO confirmation on intended behavior,Pass,
+UDL-012,Accessibility: Current Year dropdown is keyboard operable,Accessibility,On dashboard,1. Tab to Current Year 2. Open with Enter/Space 3. Select year using keyboard,N/A,Dropdown operable without mouse; visible focus; selection applied,Medium,Minor,Partial,,Pass,
+UDL-013,Authorization: dashboard cannot be accessed when logged out,Security / Authorization,User logged out,1. Open dashboard URL directly,N/A,Redirects to login or shows access denied; no dashboard data exposed,High,Critical,Yes,,Pass,
+Cultural Dashboard,,,,,,,,,,,,
+Test Case ID,Test Case Title,Test Type,Preconditions,Test Steps,Test Data,Expected Result,Priority,Severity,Automation Feasibility,Remarks,,
+CD-001,User Dashboard loads Cultural Activities and Procedure Misses panels,Smoke,User is logged in and has dashboard access,"1. Open .../EYEPAX/
+ 2. Navigate to Udara Akmeemana’s Dashboard (if not default)",N/A,"Dashboard shows: CULTURAL ACTIVITIES panel + PROCEDURE MISSES panel, and Current Year dropdown",High,Critical,Yes,Validate headings and presence of panels,Pass,
+CD-002,Current Year dropdown is visible and does not break dashboard UI,Functional / UI,On user dashboard,1. Open Current Yeardropdown 2. Select a different year (if available),Example: 2026 ? 2025,Selected year updates; dashboard headings/data refresh without layout issues,High,Major,Partial,Exact year options depend on env,Pass,
+CD-003,Cultural Activities panel shows “Most Recent Events” list and summary table structure,Functional / UI,On user dashboard,1. Verify MOST RECENT EVENTSsection is visible 2. Verify CULTURAL ACTIVITY SUMMARYtable is visible,N/A,List shows event types (Coaching/Sit-with/1 on 1/A3 etc.); table has year columns and Expected/Participated/Conducted columns,Medium,Major,Partial,"Assert structure, not counts",Pass,
+CD-004,Procedure Misses panel shows Top 3 contribution list and monthly count strip,Functional / UI,On user dashboard,1. Verify TOP 3 TYPES section contains miss types 2. Verify monthly strip shows FEB–JAN with counts,N/A,Miss type links/labels visible; month strip visible with numeric counts,High,Major,Yes,Stable UI checks,Pass,
+CD-005,Drill-down to Procedure Misses module is accessible from dashboard,Functional (Happy Path),On user dashboard,"1. Click a miss-type link (e.g., Email Read Miss) OR navigate to Procedure Misses report (as per app flow)
+
+2.Validate that count equalts to shown count
+
+3. Navigate to Clockwise ->Clockwise Data-> Procedure misses 
+navigate through 12 month shown in the dashboard as top miss using the date filer(timelog miss)
+for each month navigate to member overview -> click on the current user -> get the count for selected miss 
+Get the sum of misses happened on that category(timelog miss) through out 12 months
+compare it with the value shown on dashboard
+",Miss type: Email Read Miss,"Procedure Misses module opens successfully
+
+that count equalts to shown count
+
+3. It should equal to the shown miss type(timelog miss) in dashoard
+example - top miss type timelog miss count = calculated sum of timelog misses for part 12 months",High,Major,Partial,Exact navigation click not fully captured; adapt to actual link behavior,Pass,
+CDV-001,Cultural Dashboard ? Coaching Conducted count matches “Coaching Sessions ? As a Coach” records for selected year,Functional / Data Integrity,"User has coaching records across years; user can access Cultural Dashboard & Profile
+
+Both supervisor and participant confirmed the event","1. Login and open Cultural Dashboard.2. Set Current Year = Y.3. In Cultural Activity Summary, capture Coaching ? Conductedvalue for year Y (e.g., 5).4. Navigate to User Profile ? Coaching Sessions.5. Select tab As a Coach.6. Filter records to year Y (via Year filter if exists; else count by Date column within Y).7. Count number of coaching sessions displayed for year Y.",Year Y = 2025 (example),Coaching sessions count in As a Coachfor year Y equals dashboard Coaching Conducted value for year Y.,High,Critical,Partial,Counting is automatable if table pagination + filters are stable,Pass,
+CDV-002,Cultural Dashboard ? Coaching Participated/Received count matches “Coaching Sessions ? As a Coachee” records for selected year,Functional / Data Integrity,"Same as above
+
+User has coaching records across years; user can access Cultural Dashboard & Profile
+
+
+Both supervisor and participant confirmed the event","1. On Cultural Dashboard, set Current Year = Y.2. Capture Coaching ? Participated(or Received) value for year Y.3. Go to User Profile ? Coaching Sessions.4. Select tab As a Coachee.5. Filter to year Y (or count by Date within Y).6. Count records.",Year Y,Count equals dashboard Coaching Participated/Receivedfor year Y.,High,Critical,Partial,Validate definition: “Participated” = as Coachee,Pass,
+CDV-003,Cultural Dashboard ? Sit-with Conducted count matches “Sit-with ? As a Supervisor” records for selected year,Functional / Data Integrity,"User has sit-with records; Sit-with module accessible
+
+User has coaching records across years; user can access Cultural Dashboard & Profile
+
+Both supervisor and participant confirmed the event",1. Cultural Dashboard set Year = Y.2. Capture Sit-with ? Conductedvalue for year Y.3. Navigate to User Profile ? Sit-with.4. Select As a Supervisortab.5. Filter/count records for year Y by date.6. Compare totals.,Year Y,Total sit-with sessions in As a Supervisor for year Y equals dashboard Sit-with Conducted for year Y.,High,Critical,Partial,,"Fail
+https://eyepax.atlassian.net/browse/IEJP-9366",
+CDV-004,Cultural Dashboard ? Sit-with Participated/Received count matches “Sit-with ? As a Participant” records for selected year,Functional / Data Integrity,"Same as above
+
+User has coaching records across years; user can access Cultural Dashboard & Profile
+
+Both supervisor and participant confirmed the event",1. Cultural Dashboard set Year = Y.2. Capture Sit-with ? Participatedvalue for year Y.3. Go to User Profile ? Sit-with.4. Select As a Participanttab.5. Filter/count year Y records.6. Compare totals.,Year Y,Participant sit-with count for year Y equals dashboard Sit-with Participated/Receivedfor year Y.,High,Critical,Partial,,Pass,
+CDV-005,Cultural Dashboard ? 1 on 1 Conducted count matches “1 on 1 Meetings ? Conducted/As Supervisor” records for selected year,Functional / Data Integrity,"User has 1:1 records; 1 on 1 Meetings page accessible
+
+User has coaching records across years; user can access Cultural Dashboard & Profile
+
+Both supervisor and participant confirmed the event",1. Cultural Dashboard set Year = Y.2. Capture 1 ON 1 ? Conductedfor year Y.3. Navigate User Profile ? 1 on 1 Meetings.4. Open tab matching “Conducted/As Supervisor”.5. Filter/count year Y records by date.6. Compare.,Year Y,Conducted 1:1 count matches dashboard value.,High,Critical,Partial,Tabs naming may differ; align to actual UI,Pass,
+CDV-006,Cultural Dashboard ? 1 on 1 Participated/Received count matches “1 on 1 Meetings ? Participated/As Participant” records for selected year,Functional / Data Integrity,"Same as above
+
+User has coaching records across years; user can access Cultural Dashboard & Profile
+
+Both supervisor and participant confirmed the event",1. Cultural Dashboard set Year = Y.2. Capture 1 ON 1 ? Participatedfor year Y.3. Go to User Profile ? 1 on 1 Meetings.4. Open tab matching “Participated/As Participant”.5. Filter/count year Y records.6. Compare.,Year Y,Participated 1:1 count matches dashboard value.,High,Critical,Partial,,Pass,
+CDV-007,Year-switch validation: Changing Current Year updates dashboard counts AND profile record counting aligns to the new year,Regression / Data Integrity,User has records in at least 2 years,"1. On Cultural Dashboard set Year = Y1 and capture Coaching/Sit-with/1:1 Conducted totals.2. Switch to Year = Y2and capture totals again.3. In Profile modules, count Y1 then Y2 records for at least one module (e.g., Coaching As Coach).","Y1=2025, Y2=2024",Dashboard totals differ appropriately by year and match profile counts for each year.,High,Major,Partial,Minimizes repeated work by sampling one module in detail,Pass,
+CDV-008,"Negative: If profile has no records for year Y, dashboard shows 0 (or consistent “no data”)",Negative / Data Integrity,A year exists with no sessions for user,1. Set Current Year to a year with no sessions (Y0).2. Check dashboard values for each activity type.3. Navigate to one module and confirm no records for Y0.,Year Y0,Dashboard shows 0 (or defined no-data state) consistently and matches profile “no records”.,Medium,Major,Partial,Needs known test year,Pass,
+PMD-001,Dashboard ? Current Month Procedure Misses count matches Procedure Misses report (Current Month filter),Smoke / Data Integrity,"User logged in; Dashboard and Clockwise Data accessible
+
+Check the count by member overview for the current user","1. Open Dashboard.2. Locate Procedure Misses widget.3. Identify current month tile and capture count X.4. Navigate: Clockwise ? Clockwise Data ? Procedure Misses.5. In Predefined Search, select Current Month.6. Click Search.7. Read report total (use the primary total shown in the report context; if using Team Overview, read the total misses value for the team row/summary).8. Compare report total to X.",Current month; Dashboard count X (example: 3),Report total for Current Month equals Xshown on dashboard for the same month.,High,Critical,Partial,Define “report total” consistently (Team Overview total misses or top summary value).,Pass,
+PMD-002,Dashboard ? Past Month (same year) count matches Procedure Misses report (Year+Month filter),Functional / Data Integrity,"User logged in; Past-month data exists
+
+Check the count by member overview for the current user","1. Open Dashboard.2. In Procedure Misses widget, select a past month tile (e.g., OCT) and capture count Yand the dashboard’s applicable year range.3. Navigate to Procedure Misses report.4. Set Year = target year and Month = target month(matching the dashboard tile).5. Click Search.6. Read report total.7. Compare report total to Y.","Example: Year=2025, Month=Oct; Dashboard count Y",Report total equals Yshown on dashboard for that month/year.,High,Critical,Partial,Use a month with non-zero data for stronger validation.,Pass,
+PMD-003,Dashboard ? Past Month of a past year count matches Procedure Misses report (historical validation),Regression / Data Integrity,"User has access to historical years; data exists in past year
+
+Check the count by member overview for the current user","1. Open Dashboard.2. Switch dashboard context (if year dropdown exists) to a past year (e.g., 2024).3. Capture a month tile count Z for a month in that year.4. Go to Procedure Misses report.5. Select Year = past year, Month = selected month.6. Click Search.7. Read report total and compare to Z.","Example: Year=2024, Month=Mar; Dashboard Z",Report total equals dashboard count Z for the chosen historical month/year.,High,Major,Partial,Covers “any past month of any past year.”,Pass,
+PMD-004,Validate dashboard month count = 0 is consistent with report “No Records/0 total”,Negative / Data Integrity,"Identify a month with 0 misses on dashboard
+
+Check the count by member overview for the current user","1. On Dashboard, find a month tile showing 0 and note month/year.2. Navigate to Procedure Misses report.3. Filter to same month/year.4. Click Search.5. Verify report shows 0 total or No Records Found.",Month/year where dashboard shows 0,Report shows zero records/zero total; no mismatch or error.,Medium,Major,Partial,Confirms consistent empty-state logic.,Pass,
+PMD-005,Predefined Search “Last Month” matches dashboard last month tile count,Functional / Data Integrity,"User logged in; last month data exists
+
+Check the count by member overview for the current user","1. Capture dashboard last month tile count L (month/year inferred).2. Go to report, choose Predefined Search = Last Month.3. Search and read report total.4. Compare to L.",Last month count L,Report total for Last Month equals dashboard last-month tile count.,High,Major,Partial,Useful quick regression check for predefined filters.,Pass,
+PMD-006,Cross-check: Date range shown in report matches selected month boundaries,UI/UX / Regression,"User logged in
+
+Check the count by member overview for the current user","1. Filter report to a specific Year+Month (e.g., 2025-12).2. Click Search.3. Verify displayed date range equals month start/end (e.g., 2025-12-01 to 2025-12-31).","Year=2025, Month=Dec",Report date range matches exact month boundaries; prevents off-by-one/day errors.,Medium,Major,Yes,Important for timezone/cutoff issues.,Pass,
+PMD-007,Stability: switching months/years repeatedly keeps dashboard/report consistent,Regression,"User logged in; data exists across months
+
+Check the count by member overview for the current user","1. Pick 2–3 months across different years on dashboard and note counts.2. For each, filter report and validate totals.3. Ensure no stale results remain after switching filters.","3 samples: (Y1/M1), (Y1/M2), (Y2/M3)",Each month/year validation passes; report updates correctly on each search.,Medium,Major,Partial,Sampling-based regression is efficient.,Pass,
+,,,,,,,,,,,,
+User ->Dash Borad,,,,,,,,,,,,
+User Dashboard,,,,,,,,,,,,
+Test Case ID,Test Case Title,Test Type,Preconditions,Test Steps,Test Data,Expected Result,Priority,Severity,Automation Feasibility,Remarks,,
+TC-LEAVE-001,Verify user lands on “Users’s Dashboard” after login,Smoke,Valid user account exists,1) Log in to app 2) Observe landing page header,Username/password (valid),Dashboard loads and displays header “Users’s Dashboard”,High,Critical,Yes,Login UI not shown in frames but implied by session,Pass,
+TC-LEAVE-002,Verify top navigation menu is visible and clickable,UI/UX,Logged in,"1) Verify “Teams, User, Projects, ClockWise, Utilities, Security” visible 2) Click each and confirm navigation occurs",N/A,Each menu item is visible and routes to correct module without errors,Medium,Major,Yes,Route targets may differ by role,Pass,
+TC-LEAVE-003,Verify “Current Year” dropdown default value,Functional,"Logged in, dashboard open",1) Observe “Current Year” dropdown value,N/A,"Dropdown shows a year (e.g., 2025) and is not blank",High,Major,Yes,,Pass,
+TC-LEAVE-004,Change Current Year and verify dashboard updates,Functional (Happy),Dashboard open,"1) Click “Current Year” dropdown 2) Select next year (e.g., 2026) 3) Observe Leave Summary title and Notice Summary year columns",Year: 2026,Leave Summary title changes to “LEAVE SUMMARY (2026 & 2025)” and Notice Summary columns update to reflect selected year pair,High,Major,Yes,Key behavior seen in recording,Pass,
+TC-LEAVE-005,Verify “upcoming leaves” message appears when applicable,Functional,"Dashboard open, year with no upcoming leaves","1) Select a year with no upcoming leaves if no leaves apply 
+2) Apply a leave without supervieor approval Observe message area
+3) supervisor approve the leave , pending HR approve Observe message area",Year with no upcoming leaves,"Message “HAS NO UPCOMING LEAVES FOR THE YEAR.” is displayed
+2.LAKSHIKA WARUNI HAS A PENDING LEAVE REQUEST FOR 2026-04-09 TO 2026-04-10 ( 2.0 DAYS), PENDING HR APPROVAL.
+3.LAKSHIKA WARUNI HAS A PENDING LEAVE REQUEST FOR 2026-04-09 TO 2026-04-10 ( 2.0 DAYS), PENDING HR APPROVAL.",Medium,Minor,Yes,Text must match exactly (case/spacing as UI standard),Pass,
+TC-LEAVE-006,Verify upcoming leaves list displays when data exists,Functional,User has upcoming leaves,1) Select year where upcoming leaves exist,User with upcoming leaves,Upcoming leaves area displays list/cards instead of empty message,High,Major,Yes,Data-dependent,Pass,
+TC-LEAVE-007,Validate Notice Summary table column headers and year sub-headers,UI/UX,Dashboard open,"1) Verify group headers: Total Used, Correct Notice, Short Notice, No Notice 2) Verify each has two year sub-columns",N/A,Headers render aligned; year sub-columns match selected year and previous year,Medium,Minor,Yes,,Pass,
+TC-LEAVE-009,"Verify leave type rows include Casual, Annual, Medical,Lieu,No-Pay,",Regression,Dashboard open,"1) Verify row labels under Leave Type
+2. Validate current year applied leave count/ total leave count for type is correct for all the types
+3. Navigate to User profile -> Request leave -> apply leave
+4. Apply leaves on each type
+5. Cancel the leave for each type
+6. Repeat 4,5 with supporvisor or HR cancelled(one at a time, both)
+7. Repeat 4,5 with supporvisor and HR cancelled(approved)",N/A,"Casual/Annual/Medical rows appear (or configured leave types appear consistently)
+
+Count sums should be equal
+example - user has applied 2 /7 casual leaves, Should show in the color tab
+
+3. Navigated to request leave page
+4.  Count for current year increased by 1 on each type in user dashboard
+5.Count for current year decreased by 1 on each type in user dashboard
+6.Count for current year decreased by 1 on each type in user dashboard
+7.Count remains same as applied leave",Medium,Minor,Yes,"If leave types configurable, assert against config",Pass,
+TC-LEAVE-010,Verify “User Profile” button navigation,Functional,Dashboard open,1) Click “User Profile” button,N/A,User Profile page opens without errors,Medium,Major,Yes,Destination screen not shown in recording,Pass,
+TC-LEAVE-011,Verify “Cultural Dashboard” button navigation,Functional,Dashboard open,1) Click “Cultural Dashboard” button,N/A,Cultural Dashboard opens without errors,Medium,Major,Yes,Destination screen not shown in recording,Pass,
+TC-LEAVE-012,Validate Dashboard leave totals match My Leave History sums (per leave type) for selected year,Functional + Data Integrity,User has leave history records for the selected year,"1) Go to Dashboard 2) Set Current Year = Y 3) Note Dashboard Leave Summary counts per leave type for year Y (Casual/Annual/Medical) 4) Go to User Profile ? Request Leave ? My Leave History 5) Filter/identify records belonging to year Y 6) For each leave type, sum the “Days” column 7) Compare each sum with Dashboard values","Year Y (e.g., 2025)","For each leave type, Dashboard count for year Y = SUM(Days) from My Leave History for year Y",High,Critical,Yes,"If UI lacks filters, summation may be done via exported data/API or controlled dataset",Pass,
+TC-LEAVE-013,Validate Dashboard previous-year totals match My Leave History sums (Y-1),Regression + Data Integrity,"User has records in Y and Y-1
+
+Change the year using year drop down","1) Set Current Year = Y 2) Note Dashboard values for year Y-1 column 3) In My Leave History, compute sums for Y-1 4) Compare",Year Y and Y-1,Dashboard Y-1 totals match computed sums for Y-1,Medium,Major,Yes,Validates the “(Y & Y-1)” pairing logic,Pass,
+TC-LEAVE-014,Validate year switch refreshes reconciliation correctly,Regression,User has different totals in different years,1) On Dashboard set Year = 2025 and capture totals 2) Validate against My Leave History sums for 2025 3) Change Year = 2026 and repeat validation,2025 vs 2026,Totals always reconcile for the selected year; no stale/cached values,High,Major,Yes,Catch caching bugs,Pass,
+TC-LEAVE-015,Validate cancelled leaves inclusion/exclusion rule in totals,Negative + Data Integrity,History contains Cancelled records,1) Identify leave records with status = Cancelled 2) Compute sums including Cancelled and excluding Cancelled 3) Compare with Dashboard totals 4) Confirm which rule the system follows,Mix of statuses,"Dashboard totals match the defined business rule (either includes or excludes cancelled). If excluded, cancelled records must not affect totals",High,Critical,Yes,Requires AC confirmation; otherwise log as gap,Pass,
+TC-LEAVE-016,Validate partial-day / decimal leave days sum consistency,Boundary + Data Integrity,System supports half-day or decimals,1) Ensure at least one record has Days = 0.5 or decimal 2) Sum decimals by leave type 3) Compare with Dashboard totals,"e.g., 0.5 day casual leave",Dashboard shows correct decimal aggregation and rounding rules (as per spec),Medium,Major,Yes,Needs rounding rule definition,Pass,
+TC-LEAVE-017,Validate multi-day leave spanning year boundary is counted correctly,Boundary + Data Integrity,There is a leave spanning Dec–Jan,1) Create/identify leave From: Dec 30 (Y-1) To: Jan 2 (Y) 2) Validate how days are allocated to each year 3) Compare Dashboard year totals with expected allocation,Cross-year leave,"Totals follow expected split rule (e.g., allocate days by actual dates in each year)",High,Major,Partial,Strongly needs defined allocation rule,Pass,
+TC-LEAVE-018,Validate dashboard totals for user with no leave history,Functional,User has no leave history in selected year,1) Set Current Year = Y 2) Open My Leave History and confirm no records for Y 3) Check Dashboard values,Year 2024,Dashboard totals show 0 (or blank per design) and no errors,Medium,Major,Yes,Validates empty-state correctness,Pass,
+TC-LEAVE-019,Validate dashboard totals are user-specific (no leakage from other users),Security + Data Integrity,Two users A and B exist with different leave totals,1) Login as User A and record dashboard totals 2) Verify against A’s My Leave History sums 3) Login as User B and repeat 4) Ensure no crossover,Users A/B,Each user’s dashboard totals match their own history only,High,Critical,Yes,Prevents data leakage defects,Pass,
+TC-LEAVE-020,Click on Leave links,Security + Data Integrity,,"1. Click on each leave type
+
+2. Click on go to leave report
+
+3. Compare the the pop up data with user leave report
+
+4. Repeat this for all the leave types",,"Pop up will open
+
+2. User should navigate to the leave report in user profile
+
+3.Shown record data should match with user leave report
+
+4. Results should be correct in comparison",High,Critical,Yes,Data validation,"Fail
+
+Data is correct but there's an issue in leave report navigation
+
+https://eyepax.atlassian.net/browse/IEJP-9367",
