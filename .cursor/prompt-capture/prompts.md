@@ -1,0 +1,37 @@
+# User prompt log
+
+Captured user prompts. One row per user request. Newest rows are appended at the bottom unless the user reorders the file.
+
+| Chat title | Prompt owner | Date and timestamp | Cursor mode | Prompt |
+|---|---|---|---|---|
+| untitled | anuji.w@eyepax.com | 2026-05-08T12:00:00.000Z | agent | by lokking at these test can you say me how to run these tests |
+| untitled | anuji.w@eyepax.com | 2026-05-08T12:05:00.000Z | agent | how to run this run codegen https://jira2-stage.eyepax.info/blank_moodPopup/ |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T04:49:00.000Z | plan | @test cases/Test Case - (Teams).csv  i have dded teams realted test cases and  i also aded llocators realtes to  functional  team tab  so can you implemnt the test for that  also refer@tests/dashboard   and implemnt the test followong that in the teams only focus fuctional teams now |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T04:54:00.000Z | plan | also update all other  documents related to it |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T04:56:00.000Z | agent | Functional Teams Test Implementation<br /><br />Implement the plan as specified, it is attached for your reference. Do NOT edit the plan file itself.<br /><br />To-do's from the plan have already been created. Do not create them again. Mark them as in_progress as you work, starting with the first one. Don't stop until you have completed all the to-dos. |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T06:01:00.000Z | agent | i think each test need login first other vose cant load the page |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T06:04:00.000Z | agent | @tests/dashboard/cultural-dashboard.spec.ts @tests/dashboard/user-dashboard.spec.ts  lokk how these test runing use same in the teams |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T06:36:00.000Z | agent | here after login it loads the dasg board in that dsah bodes go to teams dropdown and then we can see functional temas @details-locators.md |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T06:59:00.000Z | agent | why these test fails what is th reason @c:\Users\AnujiWeragoda\.cursor\projects\c-Users-AnujiWeragoda-projects-jira-portal-automation\terminals\1.txt:18-824 |
+| Teams test navigation fix | anuji.w@eyepax.com | 2026-05-08T05:45:00.000Z | agent | here look how  dash bord tets are witre and use the same wy like login  first like wise @c:\Users\AnujiWeragoda\.cursor\projects\c-Users-AnujiWeragoda-projects-jira-portal-automation\terminals\1.txt:366-426  im getting this error and the screenshot shows how it look on the browser also dont chnage dashboard code its work fine |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T07:12:00.000Z | agent | why this fail reason @c:\Users\AnujiWeragoda\.cursor\projects\c-Users-AnujiWeragoda-projects-jira-portal-automation\terminals\1.txt:902-976 |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T07:25:00.000Z | agent | @c:\Users\AnujiWeragoda\.cursor\projects\c-Users-AnujiWeragoda-projects-jira-portal-automation\terminals\1.txt:972-1026 |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T10:18:00.000Z | agent | here i have a question think that i need to open two browes when runing test and check like one update something and one see thta update so can i do it  open two browswes ans two logged users can i check at once |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T10:43:00.000Z | agent | so can we jsut check it I will add locators  so now lest check this  an use these two users Senior Manager - chamith.d<br />Team Lead - dulmi.j theirs passwors are same  jiraPortal@123 so i need two browswera one  log as chamiith.d and create a sith one another log as dulmi.j and can see the sithwith in the sitwth tab |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T10:47:00.000Z | agent | @details-locators.md  these are the locators |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T10:52:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T10:57:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T11:00:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T11:03:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T11:08:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Teams test implementation | anuji.w@eyepax.com | 2026-05-08T11:11:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Sit-with cross-user test | anuji.w@eyepax.com | 2026-05-08T11:13:00.000Z | agent | from coachee dropdown selct dulmi  because we next log as her in separte browser to see right |
+| Sit-with cross-user test | anuji.w@eyepax.com | 2026-05-08T11:14:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Sit-with cross-user test | anuji.w@eyepax.com | 2026-05-08T11:15:00.000Z | agent | Briefly inform the user about the task result and perform any follow-up actions (if needed). |
+| Sit-with cross-user test | anuji.w@eyepax.com | 2026-05-08T11:22:00.000Z | agent | now i need two browswera run parralel one logged as chamith he adds the sitwith one logged ad dulmi it should show that  sitwith shavhedked by chamith on her sitwith page |
+| Sit-with cross-user test | anuji.w@eyepax.com | 2026-05-08T11:39:00.000Z | agent | i think now it brokw no it not navigate to sit woth page both should go to that page and chmith should crate dulmi shouls stays and afetr chmaith created dulmi show it |
+| Sit-with cross-user test | anuji.w@eyepax.com | 2026-05-08T11:49:00.000Z | agent | in dulmi should click this to see the sit withch as participant as superviosr not show chamit crated ines because chamith is the superviosr  these are the locators await page.locator('iframe[name="EYEPAX_iframe"]').contentFrame().locator('iframe[name="treemenu_user_card_iframe"]').contentFrame().getByRole('link', { name: 'As a Supervisor' }).click();<br />  await page.locator('iframe[name="EYEPAX_iframe"]').contentFrame().locator('iframe[name="treemenu_user_card_iframe"]').contentFrame().getByRole('link', { name: 'As a Participant' }).click(); |
+| Sit-with failure fix | unknown | 2026-05-08T12:15:00.000Z | agent | @c:\Users\AnujiWeragoda\.cursor\projects\c-Users-AnujiWeragoda-projects-jira-portal-automation\terminals\1.txt:942-1019 |
+| Sit-with supervisor modal docs | anuji.w@eyepax.com | 2026-05-11T05:00:00.000Z | agent | @details-locators.md   in super visor we get this |
+| Run sitwith test | anuji.w@eyepax.com | 2026-05-11T05:10:00.000Z | agent | run the test |
+| Record added OK popup | anuji.w@eyepax.com | 2026-05-11T05:20:00.000Z | agent | lokkk here  after cretaing thr siywth it show thus record adedd pop up so it should click ok   all others things are correct it mnavugate to as suervisor also the new sitwith we can see therse |

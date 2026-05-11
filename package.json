@@ -10,6 +10,8 @@
     "test:login": "node scripts/run-tests.js login",
     "test:login:headed": "cross-env HEADED=true node scripts/run-tests.js login",
     "test:dashboard": "node scripts/run-tests.js dashboard",
+    "test:teams": "node scripts/run-tests.js teams",
+    "test:sitwith": "node scripts/run-tests.js sitwith",
     "test:grep": "playwright test --grep",
     "test:ci": "playwright test --reporter=html,junit,allure-playwright",
     "codegen": "playwright codegen https://jira2-stage.eyepax.info/app_login/",

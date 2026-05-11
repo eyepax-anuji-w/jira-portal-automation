@@ -36,6 +36,8 @@ Execution summaries are appended by `npm run coverage:update` (reads `test-resul
 | 2026-05-07 | login | 19 | 14 | 0 | 5 | junit.xml |
 | 2026-05-07 | dashboard | 19 | 15 | 4 | 0 | UDY-003/004/005/009 failing (widget8 assertions invalid in User Dashboard view) |
 | 2026-05-07 | dashboard | 19 | 19 | 0 | 0 | All 19 dashboard cases passing after widget frame + year-select mapping fixes |
+| 2026-05-11 | sitwith | 1 | 0 | 1 | 0 | junit.xml |
+| 2026-05-11 | sitwith | 1 | 0 | 1 | 0 | junit.xml |
 
 ---
 

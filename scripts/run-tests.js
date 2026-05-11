@@ -13,11 +13,13 @@ function timestampString(date) {
 function suiteArgs(suite) {
   if (suite === 'login') return ['tests/auth/'];
   if (suite === 'dashboard') return ['tests/dashboard/'];
+  if (suite === 'teams') return ['tests/teams/'];
+  if (suite === 'sitwith') return ['tests/sitwith/'];
   return [];
 }
 
 function suiteLabel(suite) {
-  if (suite === 'all') return 'login + dashboard';
+  if (suite === 'all') return 'login + dashboard + teams + sitwith';
   return suite;
 }
 
@@ -32,7 +34,7 @@ function run(command, args, env) {
 
 function main() {
   const [, , suiteArg = 'all', ...extraArgs] = process.argv;
-  const suite = ['login', 'dashboard', 'all'].includes(suiteArg) ? suiteArg : 'all';
+  const suite = ['login', 'dashboard', 'teams', 'sitwith', 'all'].includes(suiteArg) ? suiteArg : 'all';
   const isDryRun = extraArgs.includes('--list') || extraArgs.includes('--help');
 
   const stamp = timestampString(new Date());
